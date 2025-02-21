@@ -17,7 +17,7 @@ import {
   Theme,
   Divider,
   ScrollView,
-  //Tabs,
+  Tabs,
   ToggleButton,
   // TextField,
 } from "@aws-amplify/ui-react";
@@ -60,7 +60,6 @@ const theme: Theme = {
   },
 };
 
-
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
   const { signOut } = useAuthenticator();
@@ -73,6 +72,7 @@ function App() {
   const [resolved, setResolved] = useState(false);
 
   const [file, setFile] = useState<FileType>();
+  const [tab, setTab] = useState("1");
 
   const handleChange = (event: any) => {
     setFile(event.target.files?.[0]);
@@ -146,7 +146,9 @@ function App() {
         <Button
           role="link"
           onClick={() =>
-            openInNewTab("https://washington-2-map-fixed.d2qs7f7sc8f3m1.amplifyapp.com")
+            openInNewTab(
+              "https://washington-2-map-fixed.d2qs7f7sc8f3m1.amplifyapp.com"
+            )
           }
           //onClick={() => getPlacesData()}
         >
@@ -155,90 +157,107 @@ function App() {
       </Flex>
       <br />
       <Flex direction="row">
-          <input
-            type="text"
-            value={person}
-            placeholder="person"
-            onChange={handlePerson}
-            width="250%"
-          />
-          <input
-            type="text"
-            value={description}
-            placeholder="description"
-            onChange={handleDescription}
-            width="150%"
-          />
+        <input
+          type="text"
+          value={person}
+          placeholder="person"
+          onChange={handlePerson}
+          width="250%"
+        />
+        <input
+          type="text"
+          value={description}
+          placeholder="description"
+          onChange={handleDescription}
+          width="150%"
+        />
 
-          <input
-            type="date"
-            value={date}
-            placeholder="date"
-            onChange={handleDate}
-            width="150%"
-          />
-          <Input type="number" value={lat} width="150%" />
-          <Input type="number" value={lng} width="150%" />
-          <input type="file" onChange={handleChange} />
-          <Button onClick={handleClick}>Upload</Button>
-          <ToggleButton
-            isPressed={resolved}
-            onChange={() => setResolved(!resolved)}
-          >
-            Resolve (click)
-          </ToggleButton>
-        </Flex>
-        <ScrollView
-                    as="div"
-                    ariaLabel="View example"
-                    backgroundColor="var(--amplify-colors-white)"
-                    borderRadius="6px"
-                    //border="1px solid var(--amplify-colors-black)"
-                    // boxShadow="3px 3px 5px 6px var(--amplify-colors-neutral-60)"
-                    color="var(--amplify-colors-blue-60)"
-                    // height="45rem"
-                    // maxWidth="100%"
-                    padding="1rem"
-                    // width="100%"
-                    width="2400px"
-                    height={"2400px"}
-                    maxHeight={"2400px"}
-                    maxWidth="2400px"
-                  >
-                    <ThemeProvider theme={theme} colorMode="light">
-                      <Table caption="" highlightOnHover={false}>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell as="th">Name</TableCell>
-                            <TableCell as="th">Description</TableCell>
-                            <TableCell as="th">Date</TableCell>
-                            <TableCell as="th">Report</TableCell>
-                            <TableCell as="th">Latitude</TableCell>
-                            <TableCell as="th">Longitude</TableCell>
-                            <TableCell as="th">Resolved</TableCell>
+        <input
+          type="date"
+          value={date}
+          placeholder="date"
+          onChange={handleDate}
+          width="150%"
+        />
+        <Input type="number" value={lat} width="150%" />
+        <Input type="number" value={lng} width="150%" />
+        <input type="file" onChange={handleChange} />
+        <Button onClick={handleClick}>Upload</Button>
+        <ToggleButton
+          isPressed={resolved}
+          onChange={() => setResolved(!resolved)}
+        >
+          Resolve (click)
+        </ToggleButton>
+      </Flex>
+      <Tabs
+        value={tab}
+        onValueChange={(tab) => setTab(tab)}
+        items={[
+          {
+            label: "Complaint Data",
+            value: "1",
+            content: (
+              <>
+                <ScrollView
+                  as="div"
+                  ariaLabel="View example"
+                  backgroundColor="var(--amplify-colors-white)"
+                  borderRadius="6px"
+                  //border="1px solid var(--amplify-colors-black)"
+                  // boxShadow="3px 3px 5px 6px var(--amplify-colors-neutral-60)"
+                  color="var(--amplify-colors-blue-60)"
+                  // height="45rem"
+                  // maxWidth="100%"
+                  padding="1rem"
+                  // width="100%"
+                  width="2400px"
+                  height={"2400px"}
+                  maxHeight={"2400px"}
+                  maxWidth="2400px"
+                >
+                  <ThemeProvider theme={theme} colorMode="light">
+                    <Table caption="" highlightOnHover={false}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell as="th">Name</TableCell>
+                          <TableCell as="th">Description</TableCell>
+                          <TableCell as="th">Date</TableCell>
+                          <TableCell as="th">Report</TableCell>
+                          <TableCell as="th">Latitude</TableCell>
+                          <TableCell as="th">Longitude</TableCell>
+                          <TableCell as="th">Resolved</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {todos.map((todo) => (
+                          <TableRow
+                            onClick={() => deleteTodo(todo.id)}
+                            key={todo.id}
+                          >
+                            <TableCell>{todo.person}</TableCell>
+                            <TableCell>{todo.description}</TableCell>
+                            <TableCell>{todo.date}</TableCell>
+                            <TableCell>{todo.report}</TableCell>
+                            <TableCell>{todo.lat}</TableCell>
+                            <TableCell>{todo.long}</TableCell>
+                            <TableCell>{todo.status}</TableCell>
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {todos.map((todo) => (
-                            <TableRow
-                              onClick={() => deleteTodo(todo.id)}
-                              key={todo.id}
-                            >
-                              <TableCell>{todo.person}</TableCell>
-                              <TableCell>{todo.description}</TableCell>
-                              <TableCell>{todo.date}</TableCell>
-                              <TableCell>{todo.report}</TableCell>
-                              <TableCell>{todo.lat}</TableCell>
-                              <TableCell>{todo.long}</TableCell>
-                              <TableCell>{todo.status}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </ThemeProvider>
-                  </ScrollView>
-
-
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </ThemeProvider>
+                </ScrollView>
+              </>
+            ),
+          },
+          {
+            label: "Complaint Map",
+            value: "2",
+            content: <></>,
+          },
+        ]}
+      />
     </main>
   );
 }
