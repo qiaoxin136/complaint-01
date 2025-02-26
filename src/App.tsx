@@ -4,9 +4,9 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import "@aws-amplify/ui-react/styles.css";
 
-
 import "maplibre-gl/dist/maplibre-gl.css";
 import { createMap } from "maplibre-gl-js-amplify";
+import { MapView } from "@aws-amplify/ui-react-geo";
 
 // interface Location {
 //   id: number;
@@ -91,28 +91,7 @@ function App() {
   const [tab, setTab] = useState("1");
 
   const [map, setMap] = useState<maplibregl.Map | null>(null);
-  const [viewport, setViewport] = useState({
-    longitude: -98.57956,
-    latitude: 39.8283,
-    zoom: 3,
-  });
-
-  useEffect(() => {
-    const initializeMap = async () => {
-      const newMap = await createMap({
-        container: "map",
-        center: [viewport.longitude, viewport.latitude],
-        zoom: viewport.zoom,
-      });
-      setMap(newMap);
-    };
-
-    initializeMap();
-
-    return () => {
-      map?.remove();
-    };
-  }, []);
+ 
 
   const handleChange = (event: any) => {
     setFile(event.target.files?.[0]);
@@ -296,26 +275,16 @@ function App() {
             value: "2",
             content: (
               <>
-                <div style={{ height: "500px", width: "100%" }}>
-                  <div id="map" style={{ height: "100%", width: "100%" }}></div>
-                  {/* {map &&
-                    locations.map((location) => (
-                      <Marker
-                        key={location.id}
-                        longitude={location.longitude}
-                        latitude={location.latitude}
-                      >
-                        <div
-                          style={{
-                            background: "red",
-                            width: "10px",
-                            height: "10px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      </Marker>
-                    ))} */}
-                </div>
+                <MapView
+                  initialViewState={{
+                    longitude: -122.3381659,
+                    latitude: 47.615686,
+                    zoom: 12,
+                  }}
+                  style={{ width: "600px", height: "600px" }}
+                >
+             
+                </MapView>
               </>
             ),
           },
