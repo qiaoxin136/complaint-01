@@ -4,16 +4,16 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import "@aws-amplify/ui-react/styles.css";
 
-import { Marker } from "react-map-gl/maplibre";
+
 import "maplibre-gl/dist/maplibre-gl.css";
 import { createMap } from "maplibre-gl-js-amplify";
 
-interface Location {
-  id: number;
-  latitude: number;
-  longitude: number;
-  title: string;
-}
+// interface Location {
+//   id: number;
+//   latitude: number;
+//   longitude: number;
+//   title: string;
+// }
 
 import {
   Input,
@@ -71,10 +71,10 @@ const theme: Theme = {
   },
 };
 
-const locations: Location[] = [
-  { id: 1, latitude: 40.7128, longitude: -74.006, title: "New York City" },
-  { id: 2, latitude: 34.0522, longitude: -118.2437, title: "Los Angeles" },
-];
+// const locations: Location[] = [
+//   { id: 1, latitude: 40.7128, longitude: -74.006, title: "New York City" },
+//   { id: 2, latitude: 34.0522, longitude: -118.2437, title: "Los Angeles" },
+// ];
 
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
@@ -298,7 +298,7 @@ function App() {
               <>
                 <div style={{ height: "500px", width: "100%" }}>
                   <div id="map" style={{ height: "100%", width: "100%" }}></div>
-                  {map &&
+                  {/* {map &&
                     locations.map((location) => (
                       <Marker
                         key={location.id}
@@ -314,7 +314,7 @@ function App() {
                           }}
                         />
                       </Marker>
-                    ))}
+                    ))} */}
                 </div>
               </>
             ),
