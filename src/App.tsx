@@ -5,7 +5,7 @@ import { generateClient } from "aws-amplify/data";
 import "@aws-amplify/ui-react/styles.css";
 
 import "maplibre-gl/dist/maplibre-gl.css";
-import { createMap } from "maplibre-gl-js-amplify";
+// import { createMap } from "maplibre-gl-js-amplify";
 import { MapView } from "@aws-amplify/ui-react-geo";
 
 // interface Location {
@@ -90,7 +90,7 @@ function App() {
   const [file, setFile] = useState<FileType>();
   const [tab, setTab] = useState("1");
 
-  const [map, setMap] = useState<maplibregl.Map | null>(null);
+  // const [map, setMap] = useState<maplibregl.Map | null>(null);
  
 
   const handleChange = (event: any) => {
