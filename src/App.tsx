@@ -4,6 +4,17 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import "@aws-amplify/ui-react/styles.css";
 
+import { Marker } from "react-map-gl/maplibre";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { createMap } from "maplibre-gl-js-amplify";
+
+interface Location {
+  id: number;
+  latitude: number;
+  longitude: number;
+  title: string;
+}
+
 import {
   Input,
   Flex,
@@ -60,6 +71,11 @@ const theme: Theme = {
   },
 };
 
+const locations: Location[] = [
+  { id: 1, latitude: 40.7128, longitude: -74.006, title: "New York City" },
+  { id: 2, latitude: 34.0522, longitude: -118.2437, title: "Los Angeles" },
+];
+
 function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
   const { signOut } = useAuthenticator();
@@ -73,6 +89,30 @@ function App() {
 
   const [file, setFile] = useState<FileType>();
   const [tab, setTab] = useState("1");
+
+  const [map, setMap] = useState<maplibregl.Map | null>(null);
+  const [viewport, setViewport] = useState({
+    longitude: -98.5795,
+    latitude: 39.8283,
+    zoom: 3,
+  });
+
+  useEffect(() => {
+    const initializeMap = async () => {
+      const newMap = await createMap({
+        container: "map",
+        center: [viewport.longitude, viewport.latitude],
+        zoom: viewport.zoom,
+      });
+      setMap(newMap);
+    };
+
+    initializeMap();
+
+    return () => {
+      map?.remove();
+    };
+  }, []);
 
   const handleChange = (event: any) => {
     setFile(event.target.files?.[0]);
@@ -254,7 +294,30 @@ function App() {
           {
             label: "Complaint Map",
             value: "2",
-            content: <></>,
+            content: (
+              <>
+                <div style={{ height: "500px", width: "100%" }}>
+                  <div id="map" style={{ height: "100%", width: "100%" }}></div>
+                  {map &&
+                    locations.map((location) => (
+                      <Marker
+                        key={location.id}
+                        longitude={location.longitude}
+                        latitude={location.latitude}
+                      >
+                        <div
+                          style={{
+                            background: "red",
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      </Marker>
+                    ))}
+                </div>
+              </>
+            ),
           },
         ]}
       />
