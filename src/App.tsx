@@ -92,7 +92,7 @@ function App() {
 
   const [map, setMap] = useState<maplibregl.Map | null>(null);
   const [viewport, setViewport] = useState({
-    longitude: -98.5795,
+    longitude: -98.5794,
     latitude: 39.8283,
     zoom: 3,
   });
